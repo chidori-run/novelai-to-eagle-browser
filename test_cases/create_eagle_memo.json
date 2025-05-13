@@ -1,0 +1,51 @@
+[
+    {
+        "name": "全パスカバーケース",
+        "input": {
+            "prompt_input": "||park|class room||",
+            "prompt_actual": "park",
+            "nprompt_input": "blurry, lowres, error, film grain, scan artifacts,||huge breast|small breast||",
+            "nprompt_actual": "blurry, lowres, error, film grain, scan artifacts, huge breast",
+            "characters": [
+                {
+                    "prompt_input": "1girl, ||blue eyes|red eyes|purple eyes|brown eyes||",
+                    "prompt_actual": "1girl, blue eyes",
+                    "nprompt_input": "ugly, ||red|silver|black|| hair",
+                    "nprompt_actual": "ugly, silver hair"
+                },
+                {
+                    "prompt_input": "1boy, ||smile|frown|crying||, t-shirt",
+                    "prompt_actual": "1boy, frown, t-shirt",
+                    "nprompt_input": "||long hair|very long hair||",
+                    "nprompt_actual": "long hair"
+                }
+            ],
+            "char_prompts_input": [
+                "1girl, ||blue eyes|red eyes|purple eyes|brown eyes||",
+                "1boy, ||smile|frown|crying||, t-shirt"
+            ],
+            "char_prompts_actual": [
+                "1girl, blue eyes",
+                "1boy, frown, t-shirt"
+            ],
+            "char_positions": [
+                "(0.7, 0.3)",
+                "(0.3, 0.5)"
+            ],
+            "char_nprompts_input": [
+                "ugly, ||red|silver|black|| hair",
+                "||long hair|very long hair||"
+            ],
+            "char_nprompts_actual": [
+                "ugly, silver hair",
+                "long hair"
+            ],
+            "others": {
+                "steps": 23,
+                "height": 512,
+                "width": 768
+            }
+        },
+        "expected": "Prompt: park\n  (Input Prompt: ||park|class room||)\nCharacter 1:\n  Prompt: 1girl, blue eyes\n    (Input Prompt: 1girl, ||blue eyes|red eyes|purple eyes|brown eyes||)\n  Undesired Content: ugly, silver hair\n    (Input Undesired Content: ugly, ||red|silver|black|| hair)\nCharacter 2:\n  Prompt: 1boy, frown, t-shirt\n    (Input Prompt: 1boy, ||smile|frown|crying||, t-shirt)\n  Undesired Content: long hair\n    (Input Undesired Content: ||long hair|very long hair||)\nUndesired Content: blurry, lowres, error, film grain, scan artifacts, huge breast\n  (Input Undesired Content: blurry, lowres, error, film grain, scan artifacts,||huge breast|small breast||)\nsteps: 23\nheight: 512\nwidth: 768\n"
+    }
+]

@@ -1,0 +1,448 @@
+[
+    {
+        "name": "強調:{}",
+        "input": {
+            "prompt_actual": "girl,blunt bangs, long hair, {smile}, miko, torii, best quality, amazing quality, very aesthetic, absurdres"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "blunt bangs",
+            "long hair",
+            "smile",
+            "miko",
+            "torii",
+            "best quality",
+            "amazing quality",
+            "very aesthetic",
+            "absurdres"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "blunt bangs",
+            "long hair",
+            "{smile}",
+            "miko",
+            "torii",
+            "best quality",
+            "amazing quality",
+            "very aesthetic",
+            "absurdres"
+        ]
+    },
+    {
+        "name": "抑制:[]",
+        "input": {
+            "prompt_actual": "girl, fox ears, blonde hair, [short hair], green necktie, smile,, best quality, amazing quality, very aesthetic, absurdres"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "fox ears",
+            "blonde hair",
+            "short hair",
+            "green necktie",
+            "smile",
+            "best quality",
+            "amazing quality",
+            "very aesthetic",
+            "absurdres"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "fox ears",
+            "blonde hair",
+            "[short hair]",
+            "green necktie",
+            "smile",
+            "best quality",
+            "amazing quality",
+            "very aesthetic",
+            "absurdres"
+        ]
+    },
+    {
+        "name": "強調（重ねがけ）",
+        "input": {
+            "prompt_actual": "girl, swept bangs, long hair, blonde hair,  {{{smile}}}, school uniform, , best quality"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "swept bangs",
+            "long hair",
+            "blonde hair",
+            "smile",
+            "school uniform",
+            "best quality"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "swept bangs",
+            "long hair",
+            "blonde hair",
+            "{{{smile}}}",
+            "school uniform",
+            "best quality"
+        ]
+    },
+    {
+        "name": "強調（小数）",
+        "input": {
+            "prompt_actual": "girl, swept bangs, 1.2:: smile::, kimono, rating:general, best quality, very aesthetic, absurdres"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "swept bangs",
+            "smile",
+            "kimono",
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "swept bangs",
+            "1.2:: smile::",
+            "kimono",
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres"
+        ]
+    },
+    {
+        "name": "抑制（フレーズ）",
+        "input": {
+            "prompt_actual": "girl, 0.8::short hair::, serafuku, school"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "short hair",
+            "serafuku",
+            "school"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "0.8::short hair::",
+            "serafuku",
+            "school"
+        ]
+    },
+    {
+        "name": "強調（整数）",
+        "input": {
+            "prompt_actual": "girl, long hair, 2:: angry::, t-shirt, rating:general, best quality, very aesthetic, absurdres"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "long hair",
+            "angry",
+            "t-shirt",
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "long hair",
+            "2:: angry::",
+            "t-shirt",
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres"
+        ]
+    },
+    {
+        "name": "抑制（小数）",
+        "input": {
+            "prompt_actual": "1girl, long hair,light smile, kimono, white background, full body, 0.8::chibi::"
+        },
+        "expected_tags_parse_true": [
+            "1girl",
+            "long hair",
+            "light smile",
+            "kimono",
+            "white background",
+            "full body",
+            "chibi"
+        ],
+        "expected_tags_parse_false": [
+            "1girl",
+            "long hair",
+            "light smile",
+            "kimono",
+            "white background",
+            "full body",
+            "0.8::chibi::"
+        ]
+    },
+    {
+        "name": "複数のタグを強調するケース",
+        "input": {
+            "prompt_actual": "rating:general, best quality, very aesthetic, absurdres, girl, 1.3::sad, crying::, blouse, rain"
+        },
+        "expected_tags_parse_true": [
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres",
+            "girl",
+            "sad",
+            "crying",
+            "blouse",
+            "rain"
+        ],
+        "expected_tags_parse_false": [
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres",
+            "girl",
+            "1.3::sad",
+            "crying::",
+            "blouse",
+            "rain"
+        ]
+    },
+    {
+        "name": "{}と::のネスト",
+        "input": {
+            "prompt_actual": "rating:general, best quality, very aesthetic, absurdres,girl, {2::cry::}, dress, blonde hair,"
+        },
+        "expected_tags_parse_true": [
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres",
+            "girl",
+            "cry",
+            "dress",
+            "blonde hair"
+        ],
+        "expected_tags_parse_false": [
+            "rating:general",
+            "best quality",
+            "very aesthetic",
+            "absurdres",
+            "girl",
+            "{2::cry::}",
+            "dress",
+            "blonde hair"
+        ]
+    },
+    {
+        "name": "{}と::のネスト",
+        "input": {
+            "prompt_actual": "girl, [0.5::wind::], skirt, blouse, smile, braid"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "wind",
+            "skirt",
+            "blouse",
+            "smile",
+            "braid"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "[0.5::wind::]",
+            "skirt",
+            "blouse",
+            "smile",
+            "braid"
+        ]
+    },
+    {
+        "name": "開始タグと終了タグの数が合っていない",
+        "input": {
+            "prompt_actual": "girl, swept bangs, short hair, blonde hair, {{{{{smile}}}, school uniform, , best quality"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "swept bangs",
+            "short hair",
+            "blonde hair",
+            "smile",
+            "school uniform",
+            "best quality"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "swept bangs",
+            "short hair",
+            "blonde hair",
+            "{{{{{smile}}}",
+            "school uniform",
+            "best quality"
+        ]
+    },
+    {
+        "name": "終了タグがない",
+        "input": {
+            "prompt_actual": "girl, swept bangs, short hair, blonde hair, sweater, snow, {{{smile, best quality"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "swept bangs",
+            "short hair",
+            "blonde hair",
+            "sweater",
+            "snow",
+            "smile",
+            "best quality"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "swept bangs",
+            "short hair",
+            "blonde hair",
+            "sweater",
+            "snow",
+            "{{{smile",
+            "best quality"
+        ]
+    },
+    {
+        "name": "開始タグがない",
+        "input": {
+            "prompt_actual": "girl, swept bangs, blue hair,smile}},  coat"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "swept bangs",
+            "blue hair",
+            "smile",
+            "coat"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "swept bangs",
+            "blue hair",
+            "smile}}",
+            "coat"
+        ]
+    },
+    {
+        "name": "開始タグと終了タグの種類が違う",
+        "input": {
+            "prompt_actual": "girl, swept bangs, blue hair, {{{smile]]],  blouse, skirt, best quality, amazing quality"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "swept bangs",
+            "blue hair",
+            "smile",
+            "blouse",
+            "skirt",
+            "best quality",
+            "amazing quality"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "swept bangs",
+            "blue hair",
+            "{{{smile]]]",
+            "blouse",
+            "skirt",
+            "best quality",
+            "amazing quality"
+        ]
+    },
+    {
+        "name": "タグの種類が混在",
+        "input": {
+            "prompt_actual": "girl, swept bangs, blue hair, {[{smile}]},  coat, best quality, absurdres"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "swept bangs",
+            "blue hair",
+            "smile",
+            "coat",
+            "best quality",
+            "absurdres"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "swept bangs",
+            "blue hair",
+            "{[{smile}]}",
+            "coat",
+            "best quality",
+            "absurdres"
+        ]
+    },
+    {
+        "name": "タグ内の単語に強調タグ",
+        "input": {
+            "prompt_actual": "girl, light {smile}, swept bangs, pink hair, sweater,"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "light {smile",
+            "swept bangs",
+            "pink hair",
+            "sweater"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "light {smile}",
+            "swept bangs",
+            "pink hair",
+            "sweater"
+        ]
+    },
+    {
+        "name": "強調タグの種類を間違えている",
+        "input": {
+            "prompt_actual": "girl, ((smile)), swept bangs, pink hair, sweater"
+        },
+        "expected_tags_parse_true": [
+            "girl",
+            "((smile))",
+            "swept bangs",
+            "pink hair",
+            "sweater"
+        ],
+        "expected_tags_parse_false": [
+            "girl",
+            "((smile))",
+            "swept bangs",
+            "pink hair",
+            "sweater"
+        ]
+    },
+    {
+        "name": "タグの重複",
+        "input": {
+            "prompt_actual": "eye contact, best quality, very aesthetic, absurdres,girl, blunt bangs, long hair, laughing, girl, fox ears, blonde hair, necktie, laughing"
+        },
+        "expected_tags_parse_true": [
+            "eye contact",
+            "best quality",
+            "very aesthetic",
+            "absurdres",
+            "girl",
+            "blunt bangs",
+            "long hair",
+            "laughing",
+            "fox ears",
+            "blonde hair",
+            "necktie"
+        ],
+        "expected_tags_parse_false": [
+            "eye contact",
+            "best quality",
+            "very aesthetic",
+            "absurdres",
+            "girl",
+            "blunt bangs",
+            "long hair",
+            "laughing",
+            "fox ears",
+            "blonde hair",
+            "necktie"
+        ]
+    }
+]
