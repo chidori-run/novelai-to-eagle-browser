@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NovelAI to Eagle for Browser
 // @namespace    https://runrunsketch.net/
-// @version      0.2.0
+// @version      0.2.1
 // @description  NovelAIで生成した画像をEagleに登録する
 // @author       Chidori Run
 // @copyright    2025 Chidori Run
@@ -9,8 +9,8 @@
 // @match        https://novelai.net/*
 // @grant        GM.xmlHttpRequest
 // @connect      localhost
-// @updateURL    https://github.com/chidori-run/novelai-to-eagle-browser/raw/main/novelai_to_eagle.user.js
-// @downloadURL  https://github.com/chidori-run/novelai-to-eagle-browser/raw/main/novelai_to_eagle.user.js
+// @updateURL    https://github.com/chidori-run/novelai-to-eagle-browser/raw/refs/heads/main/novelai_to_eagle.user.js
+// @downloadURL  https://github.com/chidori-run/novelai-to-eagle-browser/raw/refs/heads/main/novelai_to_eagle.user.js
 // ==/UserScript==
 
 (function () {
