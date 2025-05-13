@@ -12,7 +12,7 @@ Perfect for those who organize their images using Eagle.
 
 Compatible with userscript managers such as Tampermonkey.
 
-[👉 **Install the script**](https://github.com/chidori-run/novelai-to-eagle-browser/raw/main/novelai_to_eagle.user.js)
+[👉 **Install the script**](https://github.com/chidori-run/novelai-to-eagle-browser/raw/refs/heads/main/novelai_to_eagle.user.js)
 
 ---
 

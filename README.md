@@ -12,7 +12,7 @@
 
 Tampermonkeyなどのユーザースクリプトマネージャーに対応しています。
 
-[👉 **スクリプトをインストールする**](https://github.com/chidori-run/novelai-to-eagle-browser/raw/main/novelai_to_eagle.user.js)
+[👉 **スクリプトをインストールする**](https://github.com/chidori-run/novelai-to-eagle-browser/raw/refs/heads/main/novelai_to_eagle.user.js)
 
 
 ---
