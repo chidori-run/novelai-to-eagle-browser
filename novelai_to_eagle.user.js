@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         NovelAI to Eagle for Browser
+// @name         NovelAI to Eagle
 // @namespace    https://runrunsketch.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  NovelAIで生成した画像をEagleに登録する
 // @author       Chidori Run
 // @copyright    2025 Chidori Run
