@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NovelAI to Eagle
 // @namespace    https://runrunsketch.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  NovelAIで生成した画像をEagleに登録する
 // @author       Chidori Run
 // @copyright    2025 Chidori Run
@@ -20,6 +20,8 @@
     const IS_PARSE_TAG = true
 
     const INVALID_POSITION = [-100, -100] // 未設定または無効な位置を示す特殊値
+    const NAI_OUTPUT_MIN_WIDTH = 64
+    const NAI_OUTPUT_MIN_HEIGHT = 64
 
     const registeredImageUrls = [] // Eagleに登録済の画像URL
     const MAX_IMAGE_HISTORY_COUNT = 100 // registeredImageUrlsの最大要素数
@@ -50,15 +52,21 @@
     }
 
     class GeneratedImg {
-        constructor(imageBlobUrl, name) {
+        constructor(imageBlobUrl, name, width, height) {
             this.url = imageBlobUrl
+            this.base64 = ""
+            this.type = ""
+            this.width = width
+            this.height = height
             this.name = name
             this.params = null
         }
 
         // ファクトリー関数
-        static async create(imageBlobUrl, name) {
-            const instance = new GeneratedImg(imageBlobUrl, name)
+        static async create(imageBlobUrl, name, width, height) {
+            const instance = new GeneratedImg(imageBlobUrl, name, width, height)
+            instance.base64 = await blobToBase64(imageBlobUrl)
+            instance.type = detectImageFormatFromBase64(instance.base64)
             instance.params = await instance.readImgInfo(imageBlobUrl)
             return instance
         }
@@ -267,14 +275,11 @@
 
     async function createEagleItem(image) {
         const params = image.params
-
-        const base64Data = await blobToBase64(image.url)
-
         const eagle_tags = createEagleTags(params, IS_PARSE_TAG)
         const eagle_memo = createEagleMemo(params)
 
         const item = {
-            "url": base64Data,
+            "url": image.base64,
             "name": image.name,
             "website": "",
             "tags": eagle_tags,
@@ -402,6 +407,21 @@
         return reader.result
     }
 
+    // Base64の画像形式を判別する
+    function detectImageFormatFromBase64(base64) {
+        const binary = atob(base64.split(',')[1])
+        const firstBytes = binary.slice(0, 4)
+
+        // マジックナンバーで判定
+        if (firstBytes.charCodeAt(0) === 0xFF && firstBytes.charCodeAt(1) === 0xD8) {
+            return 'image/jpeg'
+        } else if (firstBytes.charCodeAt(0) === 0x89 && firstBytes.charCodeAt(1) === 0x50) {
+            return 'image/png'
+        } else {
+            return 'unknown'
+        }
+    }
+
     // Base64に登録データを付与してEagleに送る
     function sendItemToEagle(item, imageUrl) {
         GM.xmlHttpRequest({
@@ -415,11 +435,9 @@
                 }
 
                 registeredImageUrls.push(imageUrl) // 新しいURLを追加
-                resolve()
             },
             onerror: function (error) {
                 console.error("Eagleへの送信失敗:", error)
-                resolve()
             }
         })
     }
@@ -450,18 +468,26 @@
         for (let img of images) {
             const imageUrl = img.getAttribute("src")
 
+
             // すでにEagleに登録済ならスキップする
             if (registeredImageUrls.includes(imageUrl)) continue
 
             const imageAlt = img.getAttribute("alt") || ""
             console.log(`image url: ${imageUrl}`)
             console.log(`image alt: ${imageAlt}`)
+            console.log(`image size: ${img.naturalWidth} * ${img.naturalHeight}`)
 
-            // 生成画像をEagleに送る
-            const genImage = await GeneratedImg.create(imageUrl, imageAlt)
+            const genImage = await GeneratedImg.create(imageUrl, imageAlt, img.naturalWidth, img.naturalHeight)
+
+            // png以外はスキップする
+            if (genImage.type != "image/png") continue
+            // 最小サイズ未満の場合はスキップする
+            if (genImage.width < NAI_OUTPUT_MIN_WIDTH || genImage.height < NAI_OUTPUT_MIN_HEIGHT) continue
+
             const item = await createEagleItem(genImage)
             // console.log(`Eagle item: ${item}`)
 
+            // 生成画像をEagleに送る
             try {
                 await checkEagleWake()
                 sendItemToEagle(item, imageUrl)
