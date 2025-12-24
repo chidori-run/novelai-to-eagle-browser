@@ -28,11 +28,16 @@ Details of the registered information:
   - Duplicate tags are merged into one.
   - Special characters used for emphasis or suppression in the prompt (like `{}`, `[]`, `::`) are automatically removed.
 - The following information is saved in Eagle's **note** field:
-  - Full prompt  
-  - Negative prompt  
-  - Number of steps  
-  - Seed value  
-  - Sampler, etc.
+  - Prompt
+  - Undesired Content
+  - Steps
+  - Width and Height of the Generated Image
+  - Prompt Guidance   
+  - Prompt Guidance Rescale
+  - Seed
+  - Noise Schedule
+  - Sampler
+  - Image2Image Reference Strength and Information Extracted
 
 ---
 

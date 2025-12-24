@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         NovelAI to Eagle
 // @namespace    https://runrunsketch.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  NovelAIで生成した画像をEagleに登録する
 // @author       Chidori Run
 // @copyright    2025 Chidori Run
@@ -239,14 +239,32 @@
             this.extractCharPrompt(rawData, params)
             this.extractGenerationType(rawData, params)
 
-            const removeKeys = ["prompt", "uc", "request_type", "signed_hash", "reference_image_multiple"]
-            for (let key of removeKeys) delete rawData[key]
+            const allowKeys = [
+                "steps",
+                "height",
+                "width",
+                "scale",
+                "cfg_rescale",
+                "seed",
+                "noise_schedule",
+                "sampler",
+                "strength",
+                "noise"
+            ]
 
-            params.others = rawData
+            const filteredData = {}
+            for (const key of allowKeys) {
+                if (key in rawData) {
+                    filteredData[key] = rawData[key]
+                }
+            }
+
+            params.others = filteredData
             console.log("others:%o", params.others)
 
             return params
         }
+
     }
 
     // Eagle関連
